@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ruslan Zubchenko — Product & Delivery Manager</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #111111;
+  --bg-card: #181818;
+  --border: #2a2a2a;
+  --border-hover: #3a3a3a;
+  --text: #d4d4d4;
+  --text-muted: #666666;
+  --text-dim: #444444;
+  --red: #ff4d2a;
+  --green: #00e87b;
+  --yellow: #ffd000;
+  --blue: #4d8dff;
+  --orange: #ff8a00;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'JetBrains Mono', monospace;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection { background: var(--red); color: #000; }
+
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  background: rgba(17,17,17,0.95);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border);
+}
+.nav-inner {
+  max-width: 1400px; margin: 0 auto; padding: 0 40px;
+  display: flex; justify-content: space-between; align-items: center; height: 52px;
+}
+.nav-logo { font-weight: 800; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: var(--red); }
+.nav-status {
+  font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--green);
+  display: flex; align-items: center; gap: 8px;
+}
+.nav-status::before {
+  content: ''; width: 6px; height: 6px; background: var(--green); border-radius: 50%;
+  animation: blink 2s infinite;
+}
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+.nav-links { display: flex; gap: 28px; }
+.nav-links a {
+  color: var(--text-muted); text-decoration: none; font-size: 11px; font-weight: 500;
+  letter-spacing: 1.5px; text-transform: uppercase; transition: color 0.2s;
+}
+.nav-links a:hover { color: var(--text); }
+
+.marquee-bar {
+  margin-top: 52px; background: #0a0a0a; border-bottom: 1px solid var(--border);
+  overflow: hidden; height: 32px; display: flex; align-items: center;
+}
+.marquee-track { display: flex; white-space: nowrap; animation: marquee 40s linear infinite; }
+.marquee-track span { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-dim); padding: 0 20px; }
+.marquee-track span.sep { color: var(--border); }
+@keyframes marquee { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+
+.container { max-width: 1400px; margin: 0 auto; padding: 0 40px; }
+
+.hero { padding: 100px 0 40px; border-bottom: 1px solid var(--border); }
+.hero-name {
+  font-family: 'Inter', sans-serif; font-size: clamp(64px, 10vw, 140px); font-weight: 900;
+  line-height: 0.92; letter-spacing: -4px; text-transform: uppercase; margin-bottom: 8px;
+  animation: slideIn 0.6s ease both;
+}
+.hero-name .last { color: var(--red); display: block; }
+@keyframes slideIn { from{opacity:0;transform:translateY(40px)} to{opacity:1;transform:translateY(0)} }
+.hero-sub {
+  font-size: 13px; color: var(--text-muted); max-width: 600px; line-height: 1.8;
+  margin: 32px 0 40px; animation: slideIn 0.6s ease 0.15s both;
+}
+.hero-sub strong { color: var(--text); font-weight: 600; }
+.hero-location {
+  font-size: 11px; letter-spacing: 1.5px; color: var(--text-dim); animation: slideIn 0.6s ease 0.25s both;
+}
+.hero-location .city { color: var(--yellow); font-weight: 600; }
+
+.stats-section { border-bottom: 1px solid var(--border); }
+.stats-grid { display: grid; grid-template-columns: repeat(5, 1fr); }
+.stat-cell { padding: 36px 0 36px 20px; border-right: 1px solid var(--border); }
+.stat-cell:last-child { border-right: none; }
+.stat-num {
+  font-family: 'Inter', sans-serif; font-size: 36px; font-weight: 900; line-height: 1; margin-bottom: 6px;
+}
+.stat-num.c-red{color:var(--red)} .stat-num.c-green{color:var(--green)} .stat-num.c-yellow{color:var(--yellow)}
+.stat-num.c-blue{color:var(--blue)} .stat-num.c-orange{color:var(--orange)}
+.stat-lbl { font-size: 10px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1.5px; }
+
+.geo-section { border-bottom: 1px solid var(--border); padding: 24px 0; }
+.geo-row { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.geo-label { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-dim); margin-right: 16px; }
+.geo-chip {
+  font-size: 11px; color: var(--text-muted); padding: 4px 12px; border: 1px solid var(--border); transition: all 0.2s;
+}
+.geo-chip:hover { border-color: var(--red); color: var(--text); }
+
+.sec-header { padding: 80px 0 48px; }
+.sec-index { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--red); margin-bottom: 16px; }
+.sec-title {
+  font-family: 'Inter', sans-serif; font-size: clamp(28px, 4vw, 48px); font-weight: 900;
+  text-transform: uppercase; letter-spacing: -1px; line-height: 1.05;
+}
+
+.cases-grid { display: flex; flex-direction: column; margin-bottom: 40px; }
+.case-card { border-top: 1px solid var(--border); cursor: pointer; transition: background 0.2s; }
+.case-card:last-child { border-bottom: 1px solid var(--border); }
+.case-card:hover { background: var(--bg-card); }
+.case-header { display: grid; grid-template-columns: 60px 1fr auto; align-items: start; padding: 28px 0; gap: 24px; }
+.case-idx { font-size: 11px; color: var(--red); font-weight: 600; padding-top: 4px; }
+.case-role-line { font-size: 10px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 6px; }
+.case-title {
+  font-family: 'Inter', sans-serif; font-size: 22px; font-weight: 800;
+  text-transform: uppercase; letter-spacing: -0.5px; line-height: 1.2; margin-bottom: 8px;
+}
+.case-desc { font-size: 12px; color: var(--text-muted); line-height: 1.7; max-width: 700px; }
+.case-right { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; }
+.case-dur { font-size: 10px; color: var(--text-dim); letter-spacing: 1px; text-transform: uppercase; border: 1px solid var(--border); padding: 3px 10px; }
+.case-expand-icon { font-size: 16px; color: var(--text-dim); transition: transform 0.3s, color 0.2s; }
+.case-card:hover .case-expand-icon { color: var(--red); }
+.case-card.expanded .case-expand-icon { transform: rotate(45deg); color: var(--red); }
+
+.metrics-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+.m-chip { display: flex; align-items: center; gap: 6px; padding: 5px 12px; border: 1px solid var(--border); font-size: 12px; }
+.m-val{font-weight:700} .m-val.up{color:var(--green)} .m-val.hot{color:var(--red)} .m-val.gold{color:var(--yellow)} .m-val.blue{color:var(--blue)}
+.m-lbl { color: var(--text-dim); font-size: 10px; letter-spacing: 0.5px; }
+
+.case-detail { max-height: 0; overflow: hidden; transition: max-height 0.5s cubic-bezier(0.4,0,0.2,1); }
+.case-card.expanded .case-detail { max-height: 600px; }
+.case-detail-inner { padding: 0 0 28px 84px; }
+.detail-title {
+  font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px;
+  color: var(--red); margin-bottom: 14px; padding-top: 4px; border-top: 1px solid var(--border);
+}
+.detail-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+.detail-list li { font-size: 12px; color: var(--text-muted); padding-left: 20px; position: relative; line-height: 1.7; }
+.detail-list li::before { content: '>'; position: absolute; left: 0; color: var(--red); font-weight: 700; }
+
+.ai-section { padding-bottom: 80px; }
+.ai-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1px; background: var(--border); border: 1px solid var(--border);
+}
+.ai-card { background: var(--bg); padding: 28px 24px; transition: background 0.2s; }
+.ai-card:hover { background: var(--bg-card); }
+.ai-card-num { font-size: 10px; color: var(--red); font-weight: 700; margin-bottom: 12px; }
+.ai-card-title {
+  font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 800;
+  text-transform: uppercase; letter-spacing: -0.3px; margin-bottom: 8px;
+}
+.ai-card-desc { font-size: 11px; color: var(--text-muted); line-height: 1.7; }
+
+.pet-section { padding-bottom: 80px; }
+.pet-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  gap: 1px; background: var(--border); border: 1px solid var(--border);
+}
+.pet-card { background: var(--bg); padding: 32px 28px; transition: background 0.2s; }
+.pet-card:hover { background: var(--bg-card); }
+.pet-badge { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: var(--yellow); margin-bottom: 14px; }
+.pet-title {
+  font-family: 'Inter', sans-serif; font-size: 20px; font-weight: 900;
+  text-transform: uppercase; letter-spacing: -0.5px; margin-bottom: 10px;
+}
+.pet-desc { font-size: 11px; color: var(--text-muted); line-height: 1.7; margin-bottom: 18px; }
+.pet-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.pet-tag { padding: 3px 10px; border: 1px solid var(--border); font-size: 10px; color: var(--text-dim); letter-spacing: 0.5px; transition: all 0.2s; }
+.pet-tag:hover { border-color: var(--text-dim); color: var(--text-muted); }
+
+footer { border-top: 1px solid var(--border); padding: 60px 0; }
+.footer-top { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 48px; }
+.footer-cta {
+  font-family: 'Inter', sans-serif; font-size: clamp(28px, 4vw, 48px); font-weight: 900;
+  text-transform: uppercase; letter-spacing: -1px; line-height: 1.05;
+}
+.footer-cta .accent { color: var(--red); }
+.footer-links { display: flex; gap: 12px; }
+.footer-link {
+  color: var(--text-muted); text-decoration: none; font-size: 11px; font-weight: 500;
+  letter-spacing: 1px; text-transform: uppercase; padding: 8px 16px;
+  border: 1px solid var(--border); transition: all 0.2s;
+}
+.footer-link:hover { color: var(--text); border-color: var(--red); }
+.footer-copy { font-size: 10px; color: var(--text-dim); letter-spacing: 1px; }
+
+.reveal { opacity: 0; transform: translateY(20px); transition: all 0.5s ease; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+@media (max-width: 900px) {
+  .container, .nav-inner { padding: 0 20px; }
+  .nav-links { display: none; }
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }
+  .stat-cell { border-bottom: 1px solid var(--border); }
+  .case-header { grid-template-columns: 40px 1fr; }
+  .case-right { display: none; }
+  .case-detail-inner { padding-left: 40px; }
+  .hero-name { letter-spacing: -2px; }
+  .footer-top { flex-direction: column; align-items: flex-start; gap: 24px; }
+}
+@media (max-width: 500px) { .stats-grid { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <div class="nav-logo">Ruslan.Z</div>
+    <div class="nav-status">Available for hire</div>
+    <div class="nav-links">
+      <a href="#cases">Work</a>
+      <a href="#ai">AI</a>
+      <a href="#projects">Projects</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<div class="marquee-bar">
+  <div class="marquee-track">
+    <span>Product Management</span><span class="sep">—</span>
+    <span>Delivery</span><span class="sep">—</span>
+    <span>0→1 Launches</span><span class="sep">—</span>
+    <span>Cross-Functional Leadership</span><span class="sep">—</span>
+    <span>AI Systems</span><span class="sep">—</span>
+    <span>Regulated Environments</span><span class="sep">—</span>
+    <span>iGaming</span><span class="sep">—</span>
+    <span>Enterprise SaaS</span><span class="sep">—</span>
+    <span>eCommerce</span><span class="sep">—</span>
+    <span>A/B Testing</span><span class="sep">—</span>
+    <span>Agile / Scrum</span><span class="sep">—</span>
+    <span>Stakeholder Management</span><span class="sep">—</span>
+    <span>Builder not a function</span><span class="sep">—</span>
+    <span>Product Management</span><span class="sep">—</span>
+    <span>Delivery</span><span class="sep">—</span>
+    <span>0→1 Launches</span><span class="sep">—</span>
+    <span>Cross-Functional Leadership</span><span class="sep">—</span>
+    <span>AI Systems</span><span class="sep">—</span>
+    <span>Regulated Environments</span><span class="sep">—</span>
+    <span>iGaming</span><span class="sep">—</span>
+    <span>Enterprise SaaS</span><span class="sep">—</span>
+    <span>eCommerce</span><span class="sep">—</span>
+    <span>A/B Testing</span><span class="sep">—</span>
+    <span>Agile / Scrum</span><span class="sep">—</span>
+    <span>Stakeholder Management</span><span class="sep">—</span>
+    <span>Builder not a function</span><span class="sep">—</span>
+  </div>
+</div>
+
+<section class="hero">
+  <div class="container">
+    <div class="hero-name">Ruslan<span class="last">Zubchenko</span></div>
+    <p class="hero-sub">6+ years building and shipping digital products — from <strong>0→1 startups</strong> to <strong>enterprise SaaS</strong>. Regulated environments, high-velocity consumer products, and AI-powered workflows.</p>
+    <div class="hero-location">41.7151° N, 44.8271° E — <span class="city">Tbilisi</span></div>
+  </div>
+</section>
+
+<div class="stats-section">
+  <div class="container">
+    <div class="stats-grid">
+      <div class="stat-cell"><div class="stat-num c-red" data-target="6" data-suffix="+">0</div><div class="stat-lbl">Years Experience</div></div>
+      <div class="stat-cell"><div class="stat-num c-green" data-target="5" data-suffix="+">0</div><div class="stat-lbl">Products Launched</div></div>
+      <div class="stat-cell"><div class="stat-num c-yellow" data-target="10" data-suffix="+">0</div><div class="stat-lbl">Team Size Managed</div></div>
+      <div class="stat-cell"><div class="stat-num c-blue" data-target="8">0</div><div class="stat-lbl">Countries</div></div>
+      <div class="stat-cell"><div class="stat-num c-orange" data-target="7">0</div><div class="stat-lbl">AI Workflows</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="geo-section">
+  <div class="container">
+    <div class="geo-row">
+      <span class="geo-label">Geography</span>
+      <span class="geo-chip">🇺🇸 USA</span>
+      <span class="geo-chip">🇩🇪 Germany</span>
+      <span class="geo-chip">🇬🇧 UK</span>
+      <span class="geo-chip">🇨🇦 Canada</span>
+      <span class="geo-chip">🇦🇺 Australia</span>
+      <span class="geo-chip">🇪🇸 Spain</span>
+      <span class="geo-chip">🇺🇦 Ukraine</span>
+      <span class="geo-chip">🇮🇳 India</span>
+    </div>
+  </div>
+</div>
+
+<section id="cases">
+  <div class="container">
+    <div class="sec-header reveal">
+      <div class="sec-index">001 / Work</div>
+      <div class="sec-title">Impact-driven<br>track record.</div>
+    </div>
+    <div class="cases-grid">
+
+      <div class="case-card reveal" onclick="toggleCase(this)">
+        <div class="case-header">
+          <div class="case-idx">01</div>
+          <div class="case-meta">
+            <div class="case-role-line">Product Owner</div>
+            <div class="case-title">reBITme — eCommerce Loyalty Startup (0→1)</div>
+            <div class="case-desc">Built product team, product framework, and analytics from zero. Took a cashback startup from messy codebase to production MVP with data-driven experimentation.</div>
+            <div class="metrics-row">
+              <div class="m-chip"><span class="m-val up">+30%</span><span class="m-lbl">Visit→Reg</span></div>
+              <div class="m-chip"><span class="m-val up">0→2%</span><span class="m-lbl">Reg→Purchase</span></div>
+              <div class="m-chip"><span class="m-val gold">0→1</span><span class="m-lbl">MVP Launch</span></div>
+              <div class="m-chip"><span class="m-val blue">10</span><span class="m-lbl">Hires</span></div>
+            </div>
+          </div>
+          <div class="case-right"><div class="case-dur">1.5 years</div><div class="case-expand-icon">+</div></div>
+        </div>
+        <div class="case-detail"><div class="case-detail-inner">
+          <div class="detail-title">Key Achievements</div>
+          <ul class="detail-list">
+            <li>Assembled product team from scratch — hiring, firing, building culture</li>
+            <li>Audited architecture and codebase, created refactoring plan</li>
+            <li>Built 6-month roadmap and delivered on time</li>
+            <li>Conducted load testing and launched MVP to production</li>
+            <li>Built analytics infrastructure from zero</li>
+            <li>Designed and implemented product framework: OKR → Hypothesis → Validation → Custom RICE → Backlog → Sprint → Production</li>
+            <li>Designed and led implementation of backend A/B testing logic</li>
+            <li>Ran first experiments: +30% visit→reg conversion, 0→2% reg→purchase</li>
+          </ul>
+        </div></div>
+      </div>
+
+      <div class="case-card reveal" onclick="toggleCase(this)">
+        <div class="case-header">
+          <div class="case-idx">02</div>
+          <div class="case-meta">
+            <div class="case-role-line">Project Manager</div>
+            <div class="case-title">iGaming B2C — Tier-1 Casino Products</div>
+            <div class="case-desc">Managed delivery of multiple B2C casino brands across Dev, Product, CRM, BI, Payments, Affiliate, KYC/Risk/Fraud, and Marketing. Created standardized launch roadmap used to ship 3 new products.</div>
+            <div class="metrics-row">
+              <div class="m-chip"><span class="m-val hot">+8%</span><span class="m-lbl">Reg→FTD</span></div>
+              <div class="m-chip"><span class="m-val hot">+13.4%</span><span class="m-lbl">Avg FTD</span></div>
+              <div class="m-chip"><span class="m-val hot">+38%</span><span class="m-lbl">Click→Dep</span></div>
+              <div class="m-chip"><span class="m-val up">80%↓</span><span class="m-lbl">Downtime</span></div>
+              <div class="m-chip"><span class="m-val up">70→95%</span><span class="m-lbl">Sprint Rate</span></div>
+            </div>
+          </div>
+          <div class="case-right"><div class="case-dur">3 years</div><div class="case-expand-icon">+</div></div>
+        </div>
+        <div class="case-detail"><div class="case-detail-inner">
+          <div class="detail-title">Key Achievements</div>
+          <ul class="detail-list">
+            <li>Created the company's first standardized launch roadmap spanning 8 teams — used to ship 3 new B2C products (2 launched personally)</li>
+            <li>Designed in collaboration with CTO a 24/7 SLA monitoring system that reduced production downtime from regulatory blocks by 80%+ — detecting blocks before domains went down</li>
+            <li>Fixed sprint delivery: analyzed estimation patterns per developer, recalibrated story points, pushed CPO to improve task quality — sprint completion from 70% to 95% in 2-3 sprints</li>
+            <li>Redesigned Sprint Planning format with CPO/CTO/Head of Delivery — meetings cut from 2.5 hours to 30 minutes</li>
+            <li>Ran A/B test series on casino funnel with PM — drove +8% reg→FTD, +13.4% avg FTD, +38% click→deposit</li>
+            <li>Promoted to manage top-performing Tier-1 brand after 1 year</li>
+            <li>Managed external Android native app development (SPA)</li>
+          </ul>
+        </div></div>
+      </div>
+
+      <div class="case-card reveal" onclick="toggleCase(this)">
+        <div class="case-header">
+          <div class="case-idx">03</div>
+          <div class="case-meta">
+            <div class="case-role-line">Product Owner</div>
+            <div class="case-title">Enterprise SaaS — Chevron Phillips Chemical</div>
+            <div class="case-desc">Data-heavy compliance reporting system for Fortune 500 chemical company. Client: Reces LLC → Chevron Phillips Chemical.</div>
+            <div class="metrics-row">
+              <div class="m-chip"><span class="m-val blue">3 yrs</span><span class="m-lbl">Engagement</span></div>
+              <div class="m-chip"><span class="m-val gold">Fortune 500</span><span class="m-lbl">Client</span></div>
+            </div>
+          </div>
+          <div class="case-right"><div class="case-dur">3 years</div><div class="case-expand-icon">+</div></div>
+        </div>
+        <div class="case-detail"><div class="case-detail-inner">
+          <div class="detail-title">Key Achievements</div>
+          <ul class="detail-list">
+            <li>Stakeholder management across environmental consulting firm and Fortune 500 client</li>
+            <li>Delivered 0-1 through deep industry learning, gathering requirements and handling the roadmap and budget</li>
+            <li>Long-term engagement (3 years) demonstrating sustained trust and delivery quality in regulated domain</li>
+          </ul>
+        </div></div>
+      </div>
+
+      <div class="case-card reveal" onclick="toggleCase(this)">
+        <div class="case-header">
+          <div class="case-idx">04</div>
+          <div class="case-meta">
+            <div class="case-role-line">Product Owner</div>
+            <div class="case-title">The Fixer — On-Demand Service Platform</div>
+            <div class="case-desc">B2C on-demand service marketplace for Spain. Android + iOS + Web. Took white-label product from idea to production in 6 months — managing outsource team, then hiring own team for final push.</div>
+            <div class="metrics-row">
+              <div class="m-chip"><span class="m-val blue">3</span><span class="m-lbl">Platforms</span></div>
+              <div class="m-chip"><span class="m-val blue">5</span><span class="m-lbl">Core Team</span></div>
+              <div class="m-chip"><span class="m-val gold">6 mo</span><span class="m-lbl">Idea→Prod</span></div>
+            </div>
+          </div>
+          <div class="case-right"><div class="case-dur">6 months</div><div class="case-expand-icon">+</div></div>
+        </div>
+        <div class="case-detail"><div class="case-detail-inner">
+          <div class="detail-title">Key Achievements</div>
+          <ul class="detail-list">
+            <li>Managed transition from outsourced team to in-house: 1 frontend, 1 backend, 2 QA, 1 DevOps, 1 iOS</li>
+            <li>Wrote PRD for every feature, designed every screen and user flow</li>
+            <li>Shipped web + mobile (Android, iOS) to production, acquired first users</li>
+            <li>Validated MVP before project closed due to investor conflict</li>
+            <li>Full product ownership: from UI details to backend functionality</li>
+          </ul>
+        </div></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section id="ai" class="ai-section">
+  <div class="container">
+    <div class="sec-header reveal">
+      <div class="sec-index">002 / AI Workflows</div>
+      <div class="sec-title">How I use AI<br>in daily work.</div>
+    </div>
+    <div class="ai-grid reveal">
+      <div class="ai-card"><div class="ai-card-num">01</div><div class="ai-card-title">PRD & Documentation</div><div class="ai-card-desc">Generating structured PRDs, technical specs, and acceptance criteria with AI assistance. Cutting documentation time by 60-70%.</div></div>
+      <div class="ai-card"><div class="ai-card-num">02</div><div class="ai-card-title">QA Automation</div><div class="ai-card-desc">Building Playwright-based test pipelines: natural language test cases → AI-generated test code → stored in repo → results tracked.</div></div>
+      <div class="ai-card"><div class="ai-card-num">03</div><div class="ai-card-title">Code Review</div><div class="ai-card-desc">Using AI for PR review, catching edge cases, and ensuring code quality standards before human review.</div></div>
+      <div class="ai-card"><div class="ai-card-num">04</div><div class="ai-card-title">UI Prototyping</div><div class="ai-card-desc">Rapid UI/UX prototyping with AI — from wireframes to interactive HTML prototypes in minutes instead of hours.</div></div>
+      <div class="ai-card"><div class="ai-card-num">05</div><div class="ai-card-title">Programmatic SEO</div><div class="ai-card-desc">AI-driven content generation pipelines for scalable SEO across hundreds of pages with unique focus angles.</div></div>
+      <div class="ai-card"><div class="ai-card-num">06</div><div class="ai-card-title">Content Automation</div><div class="ai-card-desc">Automated Telegram content posting pipelines — from content creation to scheduling and distribution.</div></div>
+      <div class="ai-card"><div class="ai-card-num">07</div><div class="ai-card-title">Product Strategy</div><div class="ai-card-desc">Market analysis, competitor research, persona building, and roadmap validation using AI as analytical co-pilot.</div></div>
+    </div>
+  </div>
+</section>
+
+<section id="projects" class="pet-section">
+  <div class="container">
+    <div class="sec-header reveal">
+      <div class="sec-index">003 / Side Projects</div>
+      <div class="sec-title">Exploring<br>new frontiers.</div>
+    </div>
+    <div class="pet-grid reveal">
+      <div class="pet-card">
+        <div class="pet-badge">Research → Strategy</div>
+        <div class="pet-title">RipLab</div>
+        <div class="pet-desc">SaaS concept for automating DJ vinyl rip edits using AI — stem separation, structure analysis, natural language editing prompts. Built pitch deck, technical architecture, and GTM strategy (1000 ambassador model).</div>
+        <div class="pet-tags"><span class="pet-tag">AI/ML</span><span class="pet-tag">Audio Tech</span><span class="pet-tag">Pitch Deck</span><span class="pet-tag">GTM</span></div>
+      </div>
+      <div class="pet-card">
+        <div class="pet-badge">Prototype → Backlog</div>
+        <div class="pet-title">ScoutLens</div>
+        <div class="pet-desc">Football scouting analytics tool. Built working prototype with player search, comparison radar charts, and shortlist management. Active backlog with prioritized feature roadmap.</div>
+        <div class="pet-tags"><span class="pet-tag">Sports Data</span><span class="pet-tag">Analytics</span><span class="pet-tag">Prototype</span><span class="pet-tag">React</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer id="contact">
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-cta">Let's build<br>something <span class="accent">great.</span></div>
+      <div class="footer-links">
+        <a href="mailto:ruslan.zubchenko@gmail.com" class="footer-link">Email</a>
+        <a href="https://www.linkedin.com/in/ruslanzubchenko/" class="footer-link" target="_blank">LinkedIn</a>
+        <a href="https://t.me/drumvxlam" class="footer-link" target="_blank">Telegram</a>
+      </div>
+    </div>
+    <div class="footer-copy">© 2026 RUSLAN ZUBCHENKO — PRODUCT & DELIVERY MANAGER</div>
+  </div>
+</footer>
+
+<script>
+function animateCounters() {
+  document.querySelectorAll('.stat-num').forEach(el => {
+    const target = parseInt(el.dataset.target), suffix = el.dataset.suffix || '', start = performance.now();
+    function update(now) {
+      const p = Math.min((now - start) / 1200, 1);
+      el.textContent = Math.round((1 - Math.pow(1 - p, 3)) * target) + suffix;
+      if (p < 1) requestAnimationFrame(update);
+    }
+    requestAnimationFrame(update);
+  });
+}
+const observer = new IntersectionObserver(e => e.forEach(x => { if (x.isIntersecting) x.target.classList.add('visible'); }), { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+const so = new IntersectionObserver(e => e.forEach(x => { if (x.isIntersecting) { animateCounters(); so.unobserve(x.target); } }), { threshold: 0.5 });
+so.observe(document.querySelector('.stats-grid'));
+function toggleCase(card) {
+  const was = card.classList.contains('expanded');
+  document.querySelectorAll('.case-card').forEach(c => c.classList.remove('expanded'));
+  if (!was) card.classList.add('expanded');
+}
+document.querySelectorAll('nav a').forEach(link => {
+  link.addEventListener('click', e => { e.preventDefault(); const t = document.querySelector(link.getAttribute('href')); if (t) t.scrollIntoView({ behavior: 'smooth', block: 'start' }); });
+});
+</script>
+</body>
+</html>
